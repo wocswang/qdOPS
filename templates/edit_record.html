@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+
+
+            <!-- Top Bar Start -->
+            <!-- Top Bar End -->
+
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <!-- Left Sidebar End -->
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+
+                    {% block content %}
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title float-left">Edit Record</h4>
+
+                                    <ol class="breadcrumb float-right">
+                                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Uplon</a></li>
+                                        <li class="breadcrumb-item"><a href="">DNS Manage</a></li>
+                                        <li class="breadcrumb-item"><a href="">View List</a></li>
+                                        <li class="breadcrumb-item active">Zone List</li>
+                                    </ol>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box">
+
+                                    <h4 class="m-t-0 header-title"><b>{{ zone.zonename }}</b></h4>
+                                    <p class="text-muted font-13">
+
+                                    </p>
+                                     <div class="p-20">
+                                                <form action="{% url "DNS:edit_record"  view_id=views.pk zone_id=zone.pk record_id=record.id record_name=record.name record_type=record.Type record_ttl=record.ttl record_data=record.Data %}" method="post"  data-parsley-validate novalidate>{% csrf_token %}
+                                                    <div class="form-group">
+                                                        <label for="dns_server">Dns Server<span class="text-danger">*</span></label>
+                                                        <input type="text" name="dns_server" class="form-control" id="dns_server" value="{{ server.hostname }}" readonly="readonly">
+                                                    </div>
+                                                    <div class="form-group{% if form.record_name.errors %} has-error{% endif %}">
+                                                        <label for="name">Record Name<span class="text-danger">*</span></label>
+                                                        <input type="text" name="record_name"  class="form-control" id="record_name"  {% if form.record_name.value %} value="{{ form.record_name.value }}" {% endif %}>
+                                                            {% if form.record_name.errors %}
+                                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                    {{ form.record_name.errors|stringformat:"s"|striptags }}
+                                                            </div>
+                                                            {% endif %}
+                                                    </div>
+
+                                                    <div class="form-group {% if form.record_type.errors %} has-error{% endif %}">
+                                                        <label for="record_type">Record Type<span class="text-danger">*</span></label>
+                                                        <select id="record_type" name="record_type" class="form-control">
+
+                                                            {% for choice in form.record_type %}
+                                                               {{ choice }}
+                                                            {% endfor %}
+
+                                                        </select>
+                                                        {% if form.record_type.errors %}
+                                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                            <button type="button" class="close" data-dismiss="alert"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            {{ form.record_type.errors|stringformat:"s"|striptags }}
+                                                            {% if form.record_type.value %} Previous Value: {{ form.record_type.value }}{% endif %}
+                                                        </div>
+                                                        {% endif %}
+
+                                                    </div>
+                                                     <div class="form-group{% if form.ttl.errors %} has-error{% endif %}">
+                                                        <label for="ttl">Record Ttl <span class="text-danger">*</span></label>
+                                                        <select id="ttl" name="ttl" class="form-control">
+                                                            {% for choice in form.ttl %}
+                                                               {{ choice }}
+                                                            {% endfor %}
+                                                        </select>
+                                                     {% if form.ttl.errors %}
+                                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                                {{ form.ttl.errors|striptags }}
+                                                                {% if form.ttl.value %} Previous choice: {{ form.ttl.value }} {% endif %}
+                                                        </div>
+                                                        {% endif %}
+
+
+                                                    </div>
+                                                      <div class="form-group{% if form.record_data.errors %} has-error{% endif %}">
+                                                        <label for="record_data">Record Data<span class="text-danger">*</span></label>
+                                                        <input type="text" name="record_data" class="form-control" id="record_data" {% if form.record_data.value %}  value ="{{ form.record_data.value }}"  {% endif %}>
+
+                                                        {% if form.record_data.errors %}
+                                                          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                              </button>
+                                                                    {{ form.record_data.errors|stringformat:"s"|striptags }}
+                                                          </div>
+                                                            {% endif %}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="key_name">TSIG Key <span class="text-danger">*</span></label>
+                                                        <input type="text" name="key_name" class="form-control" id="key_name" value="{{ key_name }}"  readonly="readonly">
+
+
+
+                                                    </div>
+                                                    <div class="form-group text-right m-b-0">
+                                                        <button class="btn btn-primary waves-effect waves-light" type="submit">
+                                                            Submit
+                                                        </button>
+                                                        <a href="{% url "DNS:zone_record_list" view_id=views.pk zone_id=zone.pk %}" class="btn btn-primary waves-effect waves-light">
+                                                            Cancel
+                                                        </a>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+            {% endblock  %}
+
+            <!-- End content-page -->
+
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+
+            <!-- Right Sidebar -
+
+
+        </div>
+        <!-- END wrapper -->
+
+

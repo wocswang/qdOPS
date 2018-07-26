@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+
+
+            <!-- Top Bar Start -->
+            <!-- Top Bar End -->
+
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <!-- Left Sidebar End -->
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+
+                    {% block content %}
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title float-left">Edit Record</h4>
+
+                                    <ol class="breadcrumb float-right">
+                                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Uplon</a></li>
+                                        <li class="breadcrumb-item"><a href="">DNS Manage</a></li>
+                                        <li class="breadcrumb-item"><a href="">View List</a></li>
+                                        <li class="breadcrumb-item active">Zone List</li>
+                                    </ol>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box">
+
+                                    <h4 class="m-t-0 header-title"><b>{{ zone.zonename }}</b></h4>
+                                    <p class="text-muted font-13">
+
+                                    </p>
+                                     <div class="p-20">
+                                                <form action="{% url "DNS:delete_record" view_id=views.pk zone_id=zone.pk %}" method="post"  data-parsley-validate novalidate>{% csrf_token %}
+                                                    <div class="form-group">
+                                                        <label for="dns_server">Dns Server<span class="text-danger">*</span></label>
+                                                        <input type="text" name="dns_server" class="form-control" id="dns_server" value="{{ server.hostname }}" readonly="readonly">
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                    <label for="rr_list" >Records:</label>
+                                                     <input type="hidden" id="rr_list" name="rr_list" value="{{ rr_list }}" />
+                                                        <div>
+                                                        <p class="text-muted font-13">{% for current_rr in rr_list %}{{ current_rr }}<br /> {% endfor %}</p>
+                                                      </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="key_name">TSIG Key <span class="text-danger">*</span></label>
+                                                        <input type="text" name="key_name" class="form-control" id="key_name" value="{{ key_name }}"  readonly="readonly">
+
+
+
+                                                    </div>
+                                                    <div class="form-group text-right m-b-0">
+                                                        <button class="btn btn-primary waves-effect waves-light" type="submit">
+                                                            Submit
+                                                        </button>
+                                                        <a href="{% url "DNS:zone_record_list"  view_id=views.pk zone_id=zone.pk %}" class="btn btn-primary waves-effect waves-light">
+                                                            Cancel
+                                                        </a>
+                                                    </div>
+
+
+                                                </form>
+                                            </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+            {% endblock  %}
+
+            <!-- End content-page -->
+
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+
+            <!-- Right Sidebar -
+
+
+        </div>
+        <!-- END wrapper -->
+
+

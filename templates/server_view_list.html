@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+
+
+
+            <!-- Top Bar Start -->
+            <!-- Top Bar End -->
+
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <!-- Left Sidebar End -->
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+
+                    {% block content %}
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title float-left">View List</h4>
+
+                                    <ol class="breadcrumb float-right">
+                                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Uplon</a></li>
+                                        <li class="breadcrumb-item"><a href="">DNS Manage</a></li>
+                                        <li class="breadcrumb-item active">View List</li>
+                                    </ol>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box">
+
+                                    <h4 class="m-t-0 header-title"><b>{{ server.hostname }}</b></h4>
+                                    <p class="text-muted font-13">
+                                    </p>
+
+                                    <table class="tablesaw table m-b-0" data-tablesaw-mode="swipe" data-tablesaw-sortable data-tablesaw-sortable-switch data-tablesaw-minimap data-tablesaw-mode-switch>
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">VIEW</th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">GET KEY</th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for view in server_views_list %}
+                                        <tr>
+                                            <td><a href="{% url 'DNS:view_zone_list'  view_id=view.pk %}"> {{ view.name }}</a></td>
+                                            <td>{{ view.default_transfer_key}}</td>
+                                            <td>
+                                                {% for zone in zone_list %}
+                                            {{ zone.zonename }}
+                                            {% endfor %}
+                                            </td>
+                                        </tr>
+                                       {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+            {% endblock  %}
+
+            <!-- End content-page -->
+
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+
+            <!-- Right Sidebar -
+
+
+        </div>
+        <!-- END wrapper -->
+
+

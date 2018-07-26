@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block pageheader %}
+{% endblock %}
+<!--
+
+-->
+
+
+
+            <!-- Top Bar Start -->
+            <!-- Top Bar End -->
+
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <!-- Left Sidebar End -->
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+
+                    {% block content %}
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title float-left">Record List</h4>
+
+                                    <ol class="breadcrumb float-right">
+                                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Uplon</a></li>
+                                        <li class="breadcrumb-item"><a href="{% url 'DNS:view_zone_list' view_id %}">Zone List</a></li>
+                                        <li class="breadcrumb-item active">Record List</li>
+                                    </ol>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+
+                         <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box">
+
+                                    <h4 class="m-t-0 header-title"><b>{{ views.name }}/{{ zone.zonename }}</b></h4>
+
+                                    <p class="text-muted font-13">
+                                         <a href ="{% url 'DNS:add_record' view_id=views.pk zone_id=zone.pk %}"  class="btn btn-primary waves-effect waves-light">Add Record</a>
+                                    </p>
+                                    <form action="{% url "DNS:delete_record" view_id=views.pk zone_id=zone.pk %}" method="post">{% csrf_token %}
+                                    <table class="tablesaw table m-b-0" data-tablesaw-mode="swipe" data-tablesaw-sortable data-tablesaw-sortable-switch data-tablesaw-minimap data-tablesaw-mode-switch>
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="5">SELECT</th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">RECORD NAME</th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">TYPE</th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">TTL</th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1">IP</th>
+                                            <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="4">ACTION</th>
+
+
+
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for record in all_record.object_list%}
+                                        <tr>
+                                            <td>
+                                                <div class="checkbox checkbox-primary">
+                                                <input id="rr_list_{{ record.id }}" name="rr_list" type="checkbox" value="{{record.id}} {{ record.name }} {{ zone.zonename }} {{record.Type}} {{record.Data}}"/>
+                                                <label style="margin-left: 20px" for="rr_list_{{ record.id }}"></label>
+                                                </div>
+                                                </td>
+                                            <td>{{ record.name }}</td>
+
+                                            <td>{{ record.Type }}</td>
+                                            <td>{{ record.ttl }}</td>
+                                            <td>{{ record.Data }}</td>
+
+                                            <td>
+                                                <a href ="{% url 'DNS:edit_record' view_id=views.pk zone_id=zone.pk record_id=record.id record_name=record.name record_type=record.Type record_ttl=record.ttl record_data=record.Data %}"  class="btn btn-primary waves-effect waves-light">Edit</a>
+
+                                            </td>
+
+                                        </tr>
+                                       {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                        <p> <button type="submit" class="btn btn-primary waves-effect waves-light">Del Record</button></p>
+                                       <nav style="float: right; margin-top: -50px;margin-right: 500px" >
+                                                    <ul class="pagination pagination-split">
+                                                        {% if all_record.has_previous %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?{{ all_record.previous_page_number.querystring }}" aria-label="Previous">
+                                                                <span aria-hidden="true">&laquo;</span>
+                                                                <span class="sr-only">Previous</span>
+                                                            </a>
+                                                        </li>
+                                                        {% endif %}
+                                                        {% for page in all_record.pages %}
+                                                            {% if page %}
+                                                                {% ifequal page all_record.number %}
+                                                                    <li class="page-item active"><a class="page-link" href="?{{ page.querystring }}">{{ page }}</a></li>
+                                                            {% else %}
+
+                                                                    <li class="page-item"><a class="page-link" href="?{{ page.querystring }}">{{ page }}</a></li>
+                                                            {% endifequal %}
+                                                            {% else %}
+                                                                <li class="page-item"><a class="page-link" href="">...</a></li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% if all_record.has_next %}
+
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?{{ all_record.next_page_number.querystring }}" aria-label="Next">
+                                                                <span aria-hidden="true">&raquo;</span>
+                                                                <span class="sr-only">Next</span>
+                                                            </a>
+                                                        </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </nav>
+
+
+
+                             </form>
+                            </div>
+                        </div>
+
+            {% endblock  %}
+
+
+            <!-- End content-page -->
+
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+
+            <!-- Right Sidebar -
+
+
+        </div>
+        <!-- END wrapper -->
+
+
